@@ -16,14 +16,14 @@ export default class MyHeader extends Component {
   getNumberOfUnreadNotifications() {
     db.collection("all_notifications")
       .where("notification_status", "==", "unread")
-      .where(this.state.userId, '==', 'targeted_user_id')
+      .where('targeted_user_id', '==', this.state.userId)
       .onSnapshot((snap) => {
-        snap.docs.map((doc) => {
-          this.setState({
-            value: doc.data().length,
-          });
-        });
+        var un=snap.docs.map((doc)=>doc.data())
+        this.setState({
+          value: un.length
+        })
       });
+      console.log(this.state.value)
   }
 
   componentDidMount() {
@@ -38,7 +38,7 @@ export default class MyHeader extends Component {
           type="font-awesome"
           color="#696969"
           size={25}
-          onPress={() => {this.props.navigation.navigate('Notifications')}}
+          onPress={() => this.props.navigation.navigate('Notifications')}
         />
         <Badge
           value={this.state.value}
