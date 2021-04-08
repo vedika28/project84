@@ -16,20 +16,21 @@ export default class NotificationsScreen extends Component {
   }
 
   getNotifications = () => {
-    this.exchangeRef = db.collection("all_notifications")
-        .where("notification_status", "==", "unread")
-        .where("targeted_user_id", "==", this.state.userId)
-        .onSnapshot((snap) => {
-          var allNotifications = [];
-          snap.docs.map((doc) => {
-            var notification = doc.data();
-            notification["doc_id"] = doc.id;
-            allNotifications.push(notification);
-          });
-          this.setState({
-            allNotifications: allNotifications,
-          });
+    this.exchangeRef = db
+      .collection("all_notifications")
+      .where("notification_status", "==", "unread")
+      .where("targeted_user_id", "==", this.state.userId)
+      .onSnapshot((snap) => {
+        var allNotifications = [];
+        snap.docs.map((doc) => {
+          var notification = doc.data();
+          notification["doc_id"] = doc.id;
+          allNotifications.push(notification);
         });
+        this.setState({
+          allNotifications: allNotifications,
+        });
+      });
   };
 
   componentDidMount() {
@@ -62,7 +63,13 @@ export default class NotificationsScreen extends Component {
 
         <View style={{ flex: 0.9 }}>
           {this.state.allNotifications.length === 0 ? (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <Text style={{ fontSize: 26 }}>You have no notifications</Text>
             </View>
           ) : (
